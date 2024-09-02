@@ -1,0 +1,114 @@
+/* App.css */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-image: url('./assets/body.png'); 
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 0 auto;
+}
+
+.nome {
+  width: 100%;
+  margin: 0 auto 100px auto; /* Espaçamento superior e inferior ajustado */
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 100px;
+  
+}
+
+.search-input {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid #6DB1D7;
+  border-radius: 4px 0 0 4px;
+  font-size: 1.5rem;
+  height: 40px;
+  box-sizing: border-box; /* Ajuste para manter o padding dentro do tamanho */
+}
+
+.search-button {
+  padding: 10px;
+  background-color: #6DB1D7;
+  color: white;
+  border: 1px solid #003d6b;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  font-size: 18px;
+  height: 40px;
+}
+
+.search-button:hover {
+  background-color: #005288;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 70px; /* Espaçamento consistente entre os botões */
+  margin-bottom: 80px; /* Espaçamento entre os botões e outros elementos */
+}
+
+.btn {
+  padding: 15px;
+  background-color: #6DB1D7;
+  color: white;
+  border:1px solid #334EA0;
+  border-radius: 5px;
+  margin-top: 20px;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+  background-color: #005288;
+}
+
+.logo {
+  margin-top: 50px;
+  width: 50%;
+}
+
+@media (max-width: 769px) {
+  .nome {
+    margin-top: 100px;
+    margin-bottom: 50px;
+  }
+
+  .search-bar {
+    margin-bottom: 30px;
+   
+  }
+
+  .buttons{
+    margin-top: 100px;
+  }
+
+  .btn {
+    height:50px;
+    padding: 10px;
+    font-size: 1.5rem;
+  }
+
+  .logo {
+    width: 60%;
+  }
+}
