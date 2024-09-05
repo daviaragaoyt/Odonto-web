@@ -1,40 +1,42 @@
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import denteIcon from "../../public/images/Group.png";
 import Body from "../Components/Body";
-import denteIcon from '../../public/images/Group.png';
 
 interface Paciente {
   nome: string;
   codPaciente: string;
 }
 
-const Dentes: React.FC = () => {
+export default function Dentes() {
   const { codPaciente } = useParams(); // Pega o código do paciente da URL
   const navigate = useNavigate();
   const [paciente, setPaciente] = useState<Paciente | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [opcoesDentes, setOpcoesDentes] = useState([
-    { id: 1, dente: 'V11', score: null },
-    { id: 2, dente: 'V16', score: null },
-    { id: 3, dente: 'V26', score: null },
-    { id: 4, dente: 'V31', score: null },
-    { id: 5, dente: 'L36', score: null },
-    { id: 6, dente: 'L46', score: null },
+    { id: 1, dente: "V11", score: null },
+    { id: 2, dente: "V16", score: null },
+    { id: 3, dente: "V26", score: null },
+    { id: 4, dente: "V31", score: null },
+    { id: 5, dente: "L36", score: null },
+    { id: 6, dente: "L46", score: null },
   ]);
 
   // Faz a requisição para buscar os dados do paciente ao montar o componente
   useEffect(() => {
     const fetchPaciente = async () => {
       try {
-        const response = await fetch(`https://bakcend-deploy.vercel.app/getpaciente/${codPaciente}`);
+        const response = await fetch(
+          `https://bakcend-deploy.vercel.app/getpaciente/${codPaciente}`
+        );
         if (!response.ok) {
-          throw new Error('Erro ao buscar os dados do paciente');
+          throw new Error("Erro ao buscar os dados do paciente");
         }
         const data = await response.json();
         setPaciente(data); // Atualiza o estado com os dados do paciente
       } catch (err) {
-        setError('Erro ao buscar os dados do paciente');
+        setError("Erro ao buscar os dados do paciente");
       } finally {
         setLoading(false);
       }
@@ -58,35 +60,40 @@ const Dentes: React.FC = () => {
   // Submeter o formulário
   const handleSubmit = async () => {
     const media = calcularMedia();
-    
+
     // Salvando os dados no backend
     try {
-      const response = await fetch('https://bakcend-deploy.vercel.app/adddentes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          Avaliacao_arcada: opcoesDentes.map(dente => dente.score).join(','),
-          fk_Paciente_Cod_Paciente: codPaciente,
-          fk_Dente_Cod_dente: opcoesDentes.map(dente => dente.id).join(',')
-        }),
-      });
+      const response = await fetch(
+        "https://bakcend-deploy.vercel.app/adddentes",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            Avaliacao_arcada: opcoesDentes
+              .map((dente) => dente.score)
+              .join(","),
+            fk_Paciente_Cod_Paciente: codPaciente,
+            fk_Dente_Cod_dente: opcoesDentes.map((dente) => dente.id).join(","),
+          }),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error('Erro ao salvar dados dos dentes.');
+        throw new Error("Erro ao salvar dados dos dentes.");
       }
     } catch (error) {
-      alert('Erro ao salvar os dados.');
+      alert("Erro ao salvar os dados.");
     }
 
     // Navegar para a página correta com base na média
     if (media >= 0 && media <= 1) {
-      navigate('/resultados/resultado'); // Página para média entre 0 e 1
+      navigate("/resultados/resultado"); // Página para média entre 0 e 1
     } else if (media > 1 && media <= 2) {
-      navigate('/resultados/resultado1'); // Página para média entre 1 e 2
+      navigate("/resultados/resultado1"); // Página para média entre 1 e 2
     } else if (media > 2 && media <= 3) {
-      navigate('/resultados/resultado2'); // Página para média entre 2 e 3
+      navigate("/resultados/resultado2"); // Página para média entre 2 e 3
     }
   };
 
@@ -114,7 +121,7 @@ const Dentes: React.FC = () => {
         <h3 className="text-xl">NOME:</h3>
         <input
           type="text"
-          value={paciente?.nome || ''}
+          value={paciente?.nome || ""}
           placeholder="Digite o nome"
           className="mt-2 p-2 rounded-lg bg-white text-xl font-bold"
           readOnly
@@ -126,7 +133,7 @@ const Dentes: React.FC = () => {
         <h5 className="text-xl">CÓDIGO:</h5>
         <input
           type="text"
-          value={paciente?.codPaciente || ''}
+          value={paciente?.codPaciente || ""}
           placeholder="Digite o código"
           className="mt-2 p-2 rounded-lg bg-white text-xl font-bold"
           readOnly
@@ -147,7 +154,9 @@ const Dentes: React.FC = () => {
             <select
               className="p-2 w-16 h-16 bg-white rounded-lg shadow-lg text-center text-xl"
               value={dente.score !== null ? dente.score : ""}
-              onChange={(e) => handleScoreChange(index, parseInt(e.target.value))}
+              onChange={(e) =>
+                handleScoreChange(index, parseInt(e.target.value))
+              }
             >
               <option value="">Score</option>
               <option value="0">0</option>
@@ -168,6 +177,4 @@ const Dentes: React.FC = () => {
       </button>
     </Body>
   );
-};
-
-export default Dentes;
+}

@@ -1,64 +1,77 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Body from "../Components/Body";
 
-import {useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 
-const Cadastro: React.FC = () => {
+export default function Cadastro() {
   const navigate = useNavigate();
   // Hooks UseState
-  const [nome, setNome] = useState('');
-  const [matricula, setMatricula] = useState('');
-  const [idade, setIdade] = useState('');
-  const [genero, setGenero] = useState(''); // Captura do gênero
+  const [nome, setNome] = useState("");
+  const [matricula, setMatricula] = useState("");
+  const [idade, setIdade] = useState("");
+  const [genero, setGenero] = useState(""); // Captura do gênero
 
   // Função para quando o botão cadastrar for acionado
   const handleSubmit = async () => {
-    if (!nome || !matricula || !idade || !genero) { // Verificação de campos
+    if (!nome || !matricula || !idade || !genero) {
+      // Verificação de campos
       console.log("Erro", "Por favor, preencha todos os campos.");
       return;
-    }
-    else{
-      console.log("Cadastrado com sucesso")
+    } else {
+      console.log("Cadastrado com sucesso");
     }
 
     try {
-      const response = await fetch('https://bakcend-deploy.vercel.app/addpaciente', { // URL da API na Vercel
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          nome: nome,
-          cpf: matricula,
-          idade: idade,
-          sexo: genero, // Gênero selecionado
-        }),
-      });
+      const response = await fetch(
+        "https://bakcend-deploy.vercel.app/addpaciente",
+        {
+          // URL da API na Vercel
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            nome: nome,
+            cpf: matricula,
+            idade: idade,
+            sexo: genero, // Gênero selecionado
+          }),
+        }
+      );
 
       if (response.ok) {
-        console.log('Sucesso', 'Paciente cadastrado com sucesso!');
-       
+        console.log("Sucesso", "Paciente cadastrado com sucesso!");
       } else {
-        console.log('Erro', 'Esse nome já existe em nosso sistema.');
+        console.log("Erro", "Esse nome já existe em nosso sistema.");
       }
     } catch (error) {
-      console.error('Erro ao cadastrar paciente:', error);
-      console.log('Erro', 'Erro ao cadastrar paciente. Por favor, tente novamente.');
+      console.error("Erro ao cadastrar paciente:", error);
+      console.log(
+        "Erro",
+        "Erro ao cadastrar paciente. Por favor, tente novamente."
+      );
     }
   };
 
   return (
     <Body>
-      <div className="w-10  h-10 flex justify-center items-center bg-blue-500 rounded" onClick={() => navigate('/')}>
-      <button className="top-50 right-10">
-            <div className="text-white text-lg">←</div>
-          </button>
+      <div
+        className="w-10  h-10 flex justify-center items-center bg-blue-500 rounded"
+        onClick={() => navigate("/")}
+      >
+        <button className="top-50 right-10">
+          <div className="text-white text-lg">←</div>
+        </button>
       </div>
-      <h1 className="text-center text-white text-shadow text-3xl  font-lilitaOne mb-6 ">CADASTRO</h1>
+      <h1 className="text-center text-white text-shadow text-3xl  font-lilitaOne mb-6 ">
+        CADASTRO
+      </h1>
 
       {/* Input de Nome */}
       <div className="flex flex-col mb-4">
-        <h2 className="text-xl text-white text-shadow  font-lilitaOne">NOME:</h2>
+        <h2 className="text-xl text-white text-shadow  font-lilitaOne">
+          NOME:
+        </h2>
         <input
           type="text"
           value={nome}
@@ -70,7 +83,9 @@ const Cadastro: React.FC = () => {
 
       {/* Input de Matrícula */}
       <div className="flex flex-col mb-4">
-        <h2 className="text-xl text-white text-shadow  font-lilitaOne">MATRICULA:</h2>
+        <h2 className="text-xl text-white text-shadow  font-lilitaOne">
+          MATRICULA:
+        </h2>
         <input
           type="text"
           value={matricula}
@@ -82,7 +97,9 @@ const Cadastro: React.FC = () => {
 
       {/* Input de Idade */}
       <div className="flex flex-col mb-4">
-        <h2 className="text-xl text-white text-shadow  font-lilitaOne">IDADE:</h2>
+        <h2 className="text-xl text-white text-shadow  font-lilitaOne">
+          IDADE:
+        </h2>
         <input
           type="number"
           value={idade}
@@ -94,7 +111,9 @@ const Cadastro: React.FC = () => {
 
       {/* Select de Sexo */}
       <div className="flex flex-col mb-6">
-        <h2 className="text-xl text-white text-shadow  font-lilitaOne">SEXO:</h2>
+        <h2 className="text-xl text-white text-shadow  font-lilitaOne">
+          SEXO:
+        </h2>
         <select
           value={genero}
           onChange={(e) => setGenero(e.target.value)} // Atualiza o estado do gênero
@@ -116,6 +135,4 @@ const Cadastro: React.FC = () => {
       </button>
     </Body>
   );
-};
-
-export default Cadastro;
+}
