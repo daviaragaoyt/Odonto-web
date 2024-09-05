@@ -28,7 +28,7 @@ export default function Home() {
             // Verifica se o paciente foi encontrado
             if (paciente && paciente.codPaciente) {
                 // Redireciona para a página de avaliação dentária com o código do paciente.
-                navigate(`/Dentes/${paciente.codPaciente}`);
+                navigate(`/dentes/${paciente.codPaciente}`);
             } else {
                 setError('Paciente não encontrado');
             }
