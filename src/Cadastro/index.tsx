@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Body from "../Components/Body";
+import Body from "../components/Body";
 
 import { useNavigate } from "react-router-dom";
 

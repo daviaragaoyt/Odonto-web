@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Cadastro from './Cadastro'; // Importar o componente de Cadastro
-import Home from './Home';
-import Dentes from './Dentes';
+import Cadastro from './cadastro'; // Importar o componente de Cadastro
+import Home from './home';
+import Dentes from './dentes';
 
 const App: React.FC = () => {
   return (
