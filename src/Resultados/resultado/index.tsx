@@ -1,6 +1,5 @@
 import  { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CustomText from '../../components/CustomText';
 import parabensImg from '../../assets/images/parabens.png'; // substitua pelo caminho correto da imagem
 import logoImg from '../../assets/images/logo.png'; // substitua pelo caminho correto da imagem
 
@@ -20,7 +19,7 @@ export default function Index() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-blue-100">
       <div className="text-center mt-10">
-        <CustomText className="text-4xl font-bold text-blue-700">PARABÉNS!</CustomText>
+
       </div>
 
       <div className="mt-10">
@@ -28,9 +27,7 @@ export default function Index() {
       </div>
 
       <div className="mt-8">
-        <CustomText className="text-2xl text-blue-600">
-          Parabéns, sua saúde bucal está excelente!
-        </CustomText>
+       
       </div>
 
       <div className="mt-16">
