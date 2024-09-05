@@ -9,7 +9,7 @@ const App: React.FC = () => {
     <BrowserRouter>
       <Routes >
         <Route  path="/" element={<Home />} />
-        <Route path="/Dentes" element={<Dentes />} />
+        <Route path="/dentes" element={<Dentes />} />
         <Route path="/cadastro" element={<Cadastro />} />
       </Routes>
     </BrowserRouter>
