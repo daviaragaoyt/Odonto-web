@@ -3,7 +3,7 @@ import Body from "../Components/Body";
 
 import {useNavigate } from 'react-router-dom'
 
-const CadastroPaciente: React.FC = () => {
+const Cadastro: React.FC = () => {
   const navigate = useNavigate();
   // Hooks UseState
   const [nome, setNome] = useState('');
@@ -118,4 +118,4 @@ const CadastroPaciente: React.FC = () => {
   );
 };
 
-export default CadastroPaciente;
+export default Cadastro;

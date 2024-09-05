@@ -8,7 +8,7 @@ interface Paciente {
   codPaciente: string;
 }
 
-const DenteForm: React.FC = () => {
+const Dentes: React.FC = () => {
   const { codPaciente } = useParams(); // Pega o código do paciente da URL
   const navigate = useNavigate();
   const [paciente, setPaciente] = useState<Paciente | null>(null);
@@ -170,4 +170,4 @@ const DenteForm: React.FC = () => {
   );
 };
 
-export default DenteForm;
+export default Dentes;
