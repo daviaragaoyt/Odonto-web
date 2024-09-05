@@ -68,14 +68,14 @@ export default function Index() {
   return (
     <Body>
       <div className="flex flex-col items-center justify-center h-screen bg-cover gap-10 mt-14">
-        <div className="flex flex-col items-center  h-screen bg-cover gap-10 mt-14">
-          <button className="absolute top-24 left-5 w-10 h-10 flex justify-center items-center bg-blue-500 rounded" onClick={() => navigate(-1)}>
+        <div className="flex flex-col items-center h-screen bg-cover gap-10 mt-14">
+          <button className="absolute top-30 left-10 w-10 h-10 flex justify-center items-center bg-blue-500 rounded" onClick={() => navigate(-1)}>
             <CustomText className="text-white text-lg">←</CustomText>
           </button>
-          <CustomText className="mt-48 text-white text-4xl shadow-md">CADASTRO</CustomText>
-          <div className="flex flex-col items-start mt-18 w-4/5 space-y-2.5">
-            <div className="flex items-start flex-row mb-5">
-              <CustomText className="text-white text-xl mr-12 shadow-black">NOME:</CustomText>
+          <CustomText className="mt-48 text-white text-3xl shadow-md">CADASTRO</CustomText>
+          <div className="flex flex-col items-center mt-18 w-4/5 space-y-2.5">
+            <div className="flex items-center flex-row mb-5 w-full">
+              <CustomText className="text-white text-xl mr-2 shadow-md">NOME:</CustomText>
               <input
                 type="text"
                 className="flex-1 border border-blue-400 rounded bg-white w-52 h-10 text-lg text-black p-1"
@@ -84,7 +84,7 @@ export default function Index() {
               />
             </div>
 
-            <div className="flex items-start flex-row mb-5">
+            <div className="flex items-center flex-row mb-5 w-full">
               <CustomText className="text-white text-xl mr-2 shadow-md">MATRÍCULA:</CustomText>
               <input
                 type="text"
@@ -94,8 +94,8 @@ export default function Index() {
               />
             </div>
 
-            <div className="flex items-start flex-row mb-5">
-              <CustomText className="text-white text-xl mr-12 shadow-md">IDADE:</CustomText>
+            <div className="flex items-center flex-row mb-5 w-full">
+              <CustomText className="text-white text-xl mr-2 shadow-md">IDADE:</CustomText>
               <input
                 type="number"
                 className="flex-1 border border-blue-400 rounded bg-white w-52 h-10 text-lg text-black p-1"
@@ -104,21 +104,21 @@ export default function Index() {
               />
             </div>
 
-            <div className="flex items-start flex-row mb-5">
-              <CustomText className="text-white text-xl mr-12 shadow-md">SEXO:</CustomText>
+            <div className="flex items-center flex-row mb-5 w-full">
+              <CustomText className="text-white text-xl mr-2 shadow-md">SEXO:</CustomText>
               <button className="flex-1 border border-blue-400 rounded bg-white w-52 h-10 text-lg text-black p-1" onClick={openModal}>
                 <CustomText className="text-black shadow-md text-xl">{genero || 'Selecionar'}</CustomText>
               </button>
             </div>
 
-            <button className="text-center justify-center items-center h-18 ml-2.5 w-72 p-3.5 mt-25 rounded border border-blue-700 bg-blue-500" onClick={handleSubmit}>
+            <button className="text-center justify-center items-center h-18 w-72 p-3.5 mt-10 rounded border border-blue-700 bg-blue-500" onClick={handleSubmit}>
               <CustomText className="text-white text-2xl shadow-md">CADASTRAR </CustomText>
             </button>
           </div>
 
-          {modalVisible && (  
-            <div className="flex-1 flex  justify-center items-center mt-5">
-              <div className="m-5 bg-white rounded p-9 flex items-center shadow-md w-52">
+          {modalVisible && (
+            <div className="flex flex-col justify-center items-center mt-5">
+              <div className="bg-white rounded p-9 flex flex-col items-center shadow-md w-52">
                 {sexo.map(item => (
                   <button
                     key={item.id}

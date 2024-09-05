@@ -3,6 +3,7 @@ import nome from '../../public/images/nome.png';
 import logo from '../../public/images/logo.png';
 import { Link } from 'react-router-dom';
 
+
 export default function Home() {
     return (
         <div>
@@ -22,9 +23,8 @@ export default function Home() {
                     <div className="flex flex-col items-center gap-24 mt-14">
                         <Link
                             to="/cadastro"
-                            className="px-6 py-3 bg-blue-400 text-white border border-blue-600 rounded-md shadow-md hover:bg-blue-600 text-center w-60 text-2xl"
-                        >
-                            Cadastro
+                            className=" px-6 py-3 bg-blue-400 text-white border border-blue-600 rounded-md shadow-md hover:bg-blue-600 text-center w-60 text-2xl"
+                        >Cadastro
                         </Link>
                         <Link
                             to="/estatisticas"

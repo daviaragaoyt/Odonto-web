@@ -10,7 +10,6 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cadastro" element={<Cadastro />} />
-       
       </Routes>
     </BrowserRouter>
   );

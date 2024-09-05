@@ -2,11 +2,16 @@ import React from 'react';
 
 const Body: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <div
-      className="min-h-screen bg-cover bg-center flex items-center justify-center "
-      style={{ backgroundImage: `url(/images/body.png)`, backgroundSize:'contain'} as React.CSSProperties}
+    <div className="relative min-h-screen bg-cover bg-center flex items-center justify-center"
+      style={{ backgroundImage: `url(/images/body.png)`, backgroundSize: 'contain' } as React.CSSProperties}
     >
-      {children}
+      {/* Camada escura sobre a imagem */}
+      <div className="absolute inset-0 bg-black opacity-20"></div>
+      
+      {/* Conteúdo acima da imagem e da camada de escurecimento */}
+      <div className="relative z-10">
+        {children}
+      </div>
     </div>
   );
 };
