@@ -1,34 +1,28 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Hook do React Router para navegação
-import CustomText from '../components/CustomText'; // Usando CustomText como um componente React padrão
-import Body from '../components/Body'; // Certifique-se de que o caminho esteja correto
+import React, { useState } from "react";
+import Body from "../Components/Body";
 
-export default function Index() {
+import {useNavigate } from 'react-router-dom'
+
+const CadastroPaciente: React.FC = () => {
   const navigate = useNavigate();
-
-  // Hooks de estado
+  // Hooks UseState
   const [nome, setNome] = useState('');
   const [matricula, setMatricula] = useState('');
   const [idade, setIdade] = useState('');
-  const [genero, setGenero] = useState('');
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const sexo = [
-    { id: 1, texto: 'Feminino' },
-    { id: 2, texto: 'Masculino' },
-    { id: 3, texto: 'Outros' },
-    { id: 4, texto: 'Voltar' },
-  ];
+  const [genero, setGenero] = useState(''); // Captura do gênero
 
   // Função para quando o botão cadastrar for acionado
   const handleSubmit = async () => {
-    if (!nome || !matricula || !idade || !genero) {
-      alert("Erro: Por favor, preencha todos os campos.");
+    if (!nome || !matricula || !idade || !genero) { // Verificação de campos
+      console.log("Erro", "Por favor, preencha todos os campos.");
       return;
+    }
+    else{
+      console.log("Cadastrado com sucesso")
     }
 
     try {
-      const response = await fetch('https://bakcend-deploy.vercel.app/addpaciente', {
+      const response = await fetch('https://bakcend-deploy.vercel.app/addpaciente', { // URL da API na Vercel
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -37,107 +31,91 @@ export default function Index() {
           nome: nome,
           cpf: matricula,
           idade: idade,
-          sexo: genero,
+          sexo: genero, // Gênero selecionado
         }),
       });
 
       if (response.ok) {
-        alert('Sucesso: Paciente cadastrado com sucesso!');
-        setNome('');
-        setMatricula('');
-        setIdade('');
-        setGenero('');
-        navigate('/dashboard'); // Redirecionar para a página de dashboard após o sucesso
+        console.log('Sucesso', 'Paciente cadastrado com sucesso!');
+       
       } else {
-        alert('Erro: Esse nome já existe em nosso sistema.');
+        console.log('Erro', 'Esse nome já existe em nosso sistema.');
       }
     } catch (error) {
       console.error('Erro ao cadastrar paciente:', error);
-      alert('Erro: Erro ao cadastrar paciente. Por favor, tente novamente.');
+      console.log('Erro', 'Erro ao cadastrar paciente. Por favor, tente novamente.');
     }
-  };
-
-  const openModal = () => {
-    setModalVisible(true);
-  };
-
-  const closeModal = () => {
-    setModalVisible(false);
   };
 
   return (
     <Body>
-      <div className="flex flex-col items-center justify-center h-screen bg-cover gap-10 mt-14">
-        <div className="flex flex-col items-center h-screen bg-cover gap-10 mt-14">
-          <button className="absolute top-30 left-10 w-10 h-10 flex justify-center items-center bg-blue-500 rounded" onClick={() => navigate(-1)}>
-            <CustomText className="text-white text-lg">←</CustomText>
+      <div className="w-10  h-10 flex justify-center items-center bg-blue-500 rounded" onClick={() => navigate('/')}>
+      <button className="top-50 right-10">
+            <div className="text-white text-lg">←</div>
           </button>
-          <CustomText className="mt-48 text-white text-3xl shadow-md">CADASTRO</CustomText>
-          <div className="flex flex-col items-center mt-18 w-4/5 space-y-2.5">
-            <div className="flex items-center flex-row mb-5 w-full">
-              <CustomText className="text-white text-xl mr-2 shadow-md">NOME:</CustomText>
-              <input
-                type="text"
-                className="flex-1 border border-blue-400 rounded bg-white w-52 h-10 text-lg text-black p-1"
-                onChange={(e) => setNome(e.target.value)}
-                value={nome}
-              />
-            </div>
-
-            <div className="flex items-center flex-row mb-5 w-full">
-              <CustomText className="text-white text-xl mr-2 shadow-md">MATRÍCULA:</CustomText>
-              <input
-                type="text"
-                className="flex-1 border border-blue-400 rounded bg-white w-52 h-10 text-lg text-black p-1"
-                onChange={(e) => setMatricula(e.target.value)}
-                value={matricula}
-              />
-            </div>
-
-            <div className="flex items-center flex-row mb-5 w-full">
-              <CustomText className="text-white text-xl mr-2 shadow-md">IDADE:</CustomText>
-              <input
-                type="number"
-                className="flex-1 border border-blue-400 rounded bg-white w-52 h-10 text-lg text-black p-1"
-                onChange={(e) => setIdade(e.target.value)}
-                value={idade}
-              />
-            </div>
-
-            <div className="flex items-center flex-row mb-5 w-full">
-              <CustomText className="text-white text-xl mr-2 shadow-md">SEXO:</CustomText>
-              <button className="flex-1 border border-blue-400 rounded bg-white w-52 h-10 text-lg text-black p-1" onClick={openModal}>
-                <CustomText className="text-black shadow-md text-xl">{genero || 'Selecionar'}</CustomText>
-              </button>
-            </div>
-
-            <button className="text-center justify-center items-center h-18 w-72 p-3.5 mt-10 rounded border border-blue-700 bg-blue-500" onClick={handleSubmit}>
-              <CustomText className="text-white text-2xl shadow-md">CADASTRAR </CustomText>
-            </button>
-          </div>
-
-          {modalVisible && (
-            <div className="flex flex-col justify-center items-center mt-5">
-              <div className="bg-white rounded p-9 flex flex-col items-center shadow-md w-52">
-                {sexo.map(item => (
-                  <button
-                    key={item.id}
-                    className="w-full p-3.5 flex items-center border-b rounded"
-                    onClick={() => {
-                      if (item.texto !== 'Voltar') {
-                        setGenero(item.texto);
-                      }
-                      closeModal();
-                    }}
-                  >
-                    <CustomText className="text-base text-black text-center">{item.texto}</CustomText>
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
       </div>
+      <h1 className="text-center text-white text-shadow text-3xl  font-lilitaOne mb-6 ">CADASTRO</h1>
+
+      {/* Input de Nome */}
+      <div className="flex flex-col mb-4">
+        <h2 className="text-xl text-white text-shadow  font-lilitaOne">NOME:</h2>
+        <input
+          type="text"
+          value={nome}
+          onChange={(e) => setNome(e.target.value)}
+          placeholder="Digite o nome"
+          className="mt-2 p-2 rounded-lg bg-white text-xl "
+        />
+      </div>
+
+      {/* Input de Matrícula */}
+      <div className="flex flex-col mb-4">
+        <h2 className="text-xl text-white text-shadow  font-lilitaOne">MATRICULA:</h2>
+        <input
+          type="text"
+          value={matricula}
+          onChange={(e) => setMatricula(e.target.value)}
+          placeholder="Digite a matrícula"
+          className="mt-2 p-2 rounded-lg bg-white text-xl "
+        />
+      </div>
+
+      {/* Input de Idade */}
+      <div className="flex flex-col mb-4">
+        <h2 className="text-xl text-white text-shadow  font-lilitaOne">IDADE:</h2>
+        <input
+          type="number"
+          value={idade}
+          onChange={(e) => setIdade(e.target.value)}
+          placeholder="Digite a idade"
+          className="mt-2 p-2 rounded-lg bg-white text-xl "
+        />
+      </div>
+
+      {/* Select de Sexo */}
+      <div className="flex flex-col mb-6">
+        <h2 className="text-xl text-white text-shadow  font-lilitaOne">SEXO:</h2>
+        <select
+          value={genero}
+          onChange={(e) => setGenero(e.target.value)} // Atualiza o estado do gênero
+          className="mt-2 p-2 rounded-lg bg-white text-xl "
+        >
+          <option value="">Selecionar</option>
+          <option value="Masculino">Masculino</option>
+          <option value="Feminino">Feminino</option>
+          <option value="Outro">Outro</option>
+        </select>
+      </div>
+
+      {/* Botão Cadastrar */}
+      <button
+        onClick={handleSubmit}
+        className="w-full bg-[#334EA0] text-white text-2xl  py-2 rounded-lg"
+      >
+        CADASTRAR
+      </button>
     </Body>
   );
-}
+};
+
+export default CadastroPaciente;

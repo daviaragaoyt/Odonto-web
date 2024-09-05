@@ -6,7 +6,7 @@ const Body: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       style={{ backgroundImage: `url(/images/body.png)`, backgroundSize: 'contain' } as React.CSSProperties}
     >
       {/* Camada escura sobre a imagem */}
-      <div className="absolute inset-0 bg-black opacity-20"></div>
+      <div className="absolute inset-0  bg-sky-600 opacity-50"></div>
       
       {/* Conteúdo acima da imagem e da camada de escurecimento */}
       <div className="relative z-10">
