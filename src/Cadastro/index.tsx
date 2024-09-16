@@ -8,22 +8,22 @@ export default function Cadastro() {
   // Hooks UseState
   const [nome, setNome] = useState("");
   const [matricula, setMatricula] = useState("");
+  const [cpf, setCpf] = useState("");
   const [idade, setIdade] = useState("");
-  const [genero, setGenero] = useState(""); // Captura do gênero
+  const [genero, setGenero] = useState("");
 
   // Função para quando o botão cadastrar for acionado
   const handleSubmit = async () => {
-    if (!nome || !matricula || !idade || !genero) {
+    if (!nome || !cpf || !matricula || !idade || !genero) {
       // Verificação de campos
-      console.log("Erro", "Por favor, preencha todos os campos.");
+      window.alert("Por favor, preencha todos os campos.");
       return;
-    } else {
-      console.log("Cadastrado com sucesso");
     }
 
     try {
       const response = await fetch(
         "https://bakcend-deploy.vercel.app/addpaciente",
+        // "http://localhost:3535/addpaciente",
         {
           // URL da API na Vercel
           method: "POST",
@@ -31,25 +31,25 @@ export default function Cadastro() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            nome: nome,
-            cpf: matricula,
-            idade: idade,
-            sexo: genero, // Gênero selecionado
+            nome,
+            cpf,
+            matricula,
+            idade,
+            sexo: genero,
           }),
         }
       );
 
       if (response.ok) {
-        console.log("Sucesso", "Paciente cadastrado com sucesso!");
+        const data = await response.json();
+        navigate(`/dentes/${data.cod_paciente}`);
       } else {
-        console.log("Erro", "Esse nome já existe em nosso sistema.");
+        console.error("Erro ao cadastrar");
+        window.alert("Erro ao cadastrar!");
       }
     } catch (error) {
       console.error("Erro ao cadastrar paciente:", error);
-      console.log(
-        "Erro",
-        "Erro ao cadastrar paciente. Por favor, tente novamente."
-      );
+      window.alert("Erro ao cadastrar paciente. Por favor, tente novamente.");
     }
   };
 
@@ -77,6 +77,18 @@ export default function Cadastro() {
           value={nome}
           onChange={(e) => setNome(e.target.value)}
           placeholder="Digite o nome"
+          className="mt-2 p-2 rounded-lg bg-white text-xl "
+        />
+      </div>
+
+      {/* Input de CPF */}
+      <div className="flex flex-col mb-4">
+        <h2 className="text-xl text-white text-shadow  font-lilitaOne">CPF:</h2>
+        <input
+          type="text"
+          value={cpf}
+          onChange={(e) => setCpf(e.target.value)}
+          placeholder="Digite o CPF"
           className="mt-2 p-2 rounded-lg bg-white text-xl "
         />
       </div>
