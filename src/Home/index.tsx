@@ -32,7 +32,7 @@ export default function Home() {
             } else {
                 setError('Paciente não encontrado');
             }
-        } catch (error) {
+        } catch  {
             setError('Erro ao buscar o paciente. Tente novamente.');
         }
     };

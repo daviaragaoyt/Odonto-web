@@ -4,15 +4,19 @@ import denteIcon from "../../public/images/Group.png";
 import Body from "../components/Body";
 
 interface Paciente {
+  cod_paciente: number;
+  cpf: string;
+  idade: number;
+  matricula: number;
   nome: string;
-  codPaciente: string;
+  sexo: string;
 }
 
 export default function Dentes() {
-  const { codPaciente } = useParams(); // Pega o código do paciente da URL
   const navigate = useNavigate();
+  const { codPaciente } = useParams<{ codPaciente: string }>();
   const [paciente, setPaciente] = useState<Paciente | null>(null);
-  const [loading, setLoading] = useState(true);
+
   const [error, setError] = useState("");
   const [opcoesDentes, setOpcoesDentes] = useState([
     { id: 1, dente: "V11", score: null },
@@ -28,24 +32,22 @@ export default function Dentes() {
     const fetchPaciente = async () => {
       try {
         const response = await fetch(
-          `https://bakcend-deploy.vercel.app/getpaciente/${codPaciente}`
+          `https://bakcend-deploy.vercel.app/paciente/${codPaciente}`
         );
         if (!response.ok) {
           throw new Error("Erro ao buscar os dados do paciente");
         }
         const data = await response.json();
         setPaciente(data); // Atualiza o estado com os dados do paciente
-      } catch (err) {
+      } catch  {
         setError("Erro ao buscar os dados do paciente");
-      } finally {
-        setLoading(false);
       }
     };
 
     if (codPaciente) {
       fetchPaciente();
     }
-  }, [codPaciente]);
+  }, );
 
   // Função para calcular a média dos scores
   const calcularMedia = () => {
@@ -83,7 +85,7 @@ export default function Dentes() {
       if (!response.ok) {
         throw new Error("Erro ao salvar dados dos dentes.");
       }
-    } catch (error) {
+    } catch  {
       alert("Erro ao salvar os dados.");
     }
 
@@ -98,15 +100,11 @@ export default function Dentes() {
   };
 
   // Lidar com a alteração de scores dos dentes
-  const handleScoreChange = (index: any, score: any) => {
+  const handleScoreChange = (index:any ,score:any) => {
     const novasOpcoesDentes = [...opcoesDentes];
     novasOpcoesDentes[index].score = score;
     setOpcoesDentes(novasOpcoesDentes);
   };
-
-  if (loading) {
-    return <div>Carregando...</div>;
-  }
 
   if (error) {
     return <div>{error}</div>;
@@ -120,9 +118,7 @@ export default function Dentes() {
       <div className="flex flex-col mb-6">
         <h3 className="text-xl">NOME:</h3>
         <input
-          type="text"
-          value={paciente?.nome || ""}
-          placeholder="Digite o nome"
+          value={paciente?.nome}
           className="mt-2 p-2 rounded-lg bg-white text-xl font-bold"
           readOnly
         />
@@ -130,11 +126,10 @@ export default function Dentes() {
 
       {/* Código do Paciente */}
       <div className="flex flex-col mb-4">
-        <h5 className="text-xl">CÓDIGO:</h5>
+        <h5 className="text-xl">Matricula:</h5>
         <input
-          type="text"
-          value={paciente?.codPaciente || ""}
-          placeholder="Digite o código"
+          typeof="true"
+          value={paciente?.matricula}
           className="mt-2 p-2 rounded-lg bg-white text-xl font-bold"
           readOnly
         />
@@ -158,7 +153,7 @@ export default function Dentes() {
                 handleScoreChange(index, parseInt(e.target.value))
               }
             >
-              <option value="">Score</option>
+              <option value=""></option>
               <option value="0">0</option>
               <option value="1">1</option>
               <option value="2">2</option>
