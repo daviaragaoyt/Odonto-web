@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Body from "../components/Body";
 
@@ -13,6 +12,17 @@ export default function Cadastro() {
   const [idade, setIdade] = useState("");
   const [genero, setGenero] = useState("");
 
+  // Função para formatar o CPF
+  const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, ""); // Remove tudo que não for número
+    if (value.length <= 11) {
+      value = value.replace(/(\d{3})(\d)/, "$1.$2");
+      value = value.replace(/(\d{3})(\d)/, "$1.$2");
+      value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    }
+    setCpf(value); // Atualiza o estado com o CPF formatado
+  };
+
   // Função para quando o botão cadastrar for acionado
   const handleSubmit = async () => {
     if (!nome || !cpf || !matricula || !idade || !genero) {
@@ -24,16 +34,14 @@ export default function Cadastro() {
     try {
       const response = await fetch(
         "https://bakcend-deploy.vercel.app/addpaciente",
-        // "http://localhost:3535/addpaciente",
         {
-          // URL da API na Vercel
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
             nome,
-            cpf,
+            cpf: cpf.replace(/\D/g, ""), // Remove a máscara para enviar o CPF limpo
             matricula,
             idade,
             sexo: genero,
@@ -44,6 +52,8 @@ export default function Cadastro() {
       if (response.ok) {
         const data = await response.json();
         navigate(`/dentes/${data.cod_paciente}`);
+        window.alert("Paciente Cadastrado com Sucesso!");
+        
       } else {
         console.error("Erro ao cadastrar");
         window.alert("Erro ao cadastrar!");
@@ -57,7 +67,7 @@ export default function Cadastro() {
   return (
     <Body>
       <div
-        className="w-10  h-10 flex justify-center items-center bg-blue-500 rounded"
+        className="w-10  h-10 flex justify-center items-center bg-[#334EA0] rounded"
         onClick={() => navigate("/")}
       >
         <button className="top-50 right-10">
@@ -82,14 +92,15 @@ export default function Cadastro() {
         />
       </div>
 
-      {/* Input de CPF */}
+      {/* Input de CPF com máscara */}
       <div className="flex flex-col mb-4">
         <h2 className="text-xl text-white text-shadow  font-lilitaOne">CPF:</h2>
         <input
           type="text"
           value={cpf}
-          onChange={(e) => setCpf(e.target.value)}
+          onChange={handleCpfChange}
           placeholder="Digite o CPF"
+          maxLength={14} // Limita o tamanho para 14 caracteres (###.###.###-##)
           className="mt-2 p-2 rounded-lg bg-white text-xl "
         />
       </div>

@@ -12,13 +12,18 @@ interface Paciente {
   sexo: string;
 }
 
+interface Dente {
+  id: number;
+  dente: string;
+  score: number | null;
+}
+
 export default function Dentes() {
   const navigate = useNavigate();
   const { codPaciente } = useParams<{ codPaciente: string }>();
   const [paciente, setPaciente] = useState<Paciente | null>(null);
-
   const [error, setError] = useState("");
-  const [opcoesDentes, setOpcoesDentes] = useState([
+  const [opcoesDentes, setOpcoesDentes] = useState<Dente[]>([
     { id: 1, dente: "V11", score: null },
     { id: 2, dente: "V16", score: null },
     { id: 3, dente: "V26", score: null },
@@ -39,7 +44,7 @@ export default function Dentes() {
         }
         const data = await response.json();
         setPaciente(data); // Atualiza o estado com os dados do paciente
-      } catch  {
+      } catch {
         setError("Erro ao buscar os dados do paciente");
       }
     };
@@ -47,7 +52,7 @@ export default function Dentes() {
     if (codPaciente) {
       fetchPaciente();
     }
-  }, );
+  }, [codPaciente]);
 
   // Função para calcular a média dos scores
   const calcularMedia = () => {
@@ -85,7 +90,7 @@ export default function Dentes() {
       if (!response.ok) {
         throw new Error("Erro ao salvar dados dos dentes.");
       }
-    } catch  {
+    } catch {
       alert("Erro ao salvar os dados.");
     }
 
@@ -100,7 +105,7 @@ export default function Dentes() {
   };
 
   // Lidar com a alteração de scores dos dentes
-  const handleScoreChange = (index:any ,score:any) => {
+  const handleScoreChange = (index: number, score: number) => {
     const novasOpcoesDentes = [...opcoesDentes];
     novasOpcoesDentes[index].score = score;
     setOpcoesDentes(novasOpcoesDentes);
@@ -112,11 +117,19 @@ export default function Dentes() {
 
   return (
     <Body>
-      <h1 className="text-center text-3xl">DENTES</h1>
+      <div
+        className="w-10  h-10 flex justify-center items-center bg-[#334EA0] rounded"
+        onClick={() => navigate("/cadastro")}
+      >
+        <button className="top-50 right-10">
+          <div className="text-white text-lg">←</div>
+        </button>
+      </div>
+      <h1 className="text-center text-3xl text-zinc-50">DENTES</h1>
 
       {/* Nome do Paciente */}
       <div className="flex flex-col mb-6">
-        <h3 className="text-xl">NOME:</h3>
+        <h3 className="text-xl text-zinc-50">NOME:</h3>
         <input
           value={paciente?.nome}
           className="mt-2 p-2 rounded-lg bg-white text-xl font-bold"
@@ -126,7 +139,7 @@ export default function Dentes() {
 
       {/* Código do Paciente */}
       <div className="flex flex-col mb-4">
-        <h5 className="text-xl">Matricula:</h5>
+        <h5 className="text-xl text-zinc-50">MATRICULA:</h5>
         <input
           typeof="true"
           value={paciente?.matricula}
@@ -140,7 +153,7 @@ export default function Dentes() {
         {opcoesDentes.map((dente, index) => (
           <div key={index} className="flex items-center">
             {/* Nome do Dente */}
-            <span className="text-xl font-bold mr-2">{dente.dente}</span>
+            <span className="text-xl font-bold mr-2 text-zinc-50">{dente.dente}</span>
 
             {/* Imagem do Dente */}
             <img src={denteIcon} alt="Dente" className="w-10 h-10 mr-2" />

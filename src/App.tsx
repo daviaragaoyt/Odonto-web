@@ -6,7 +6,7 @@ import Dentes from './dentes';
 
 const App: React.FC = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter >
       <Routes >
         <Route  path="/" element={<Home />} />
         <Route path="/dentes/:codPaciente" element={<Dentes />} />
