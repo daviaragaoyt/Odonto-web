@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Body from "../components/Body";
+import Body from "../Components/Body";
 import nome from '../../public/images/nome.png';
 import logo from '../../public/images/logo.png';
 

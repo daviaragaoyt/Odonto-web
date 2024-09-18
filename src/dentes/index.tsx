@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import denteIcon from "../../public/images/Group.png";
-import Body from "../components/Body";
+import Body from "../Components/Body";
 
 interface Paciente {
   cod_paciente: number;
