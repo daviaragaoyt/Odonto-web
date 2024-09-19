@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Body from "../components/Body";
 import nome from '../../public/images/nome.png';
 import logo from '../../public/images/logo.png';
+import {FaSearch} from 'react-icons/fa'
 
 export default function Home() {
     const [searchTerm, setSearchTerm] = useState(''); // Estado para armazenar o valor da entrada
@@ -51,13 +52,12 @@ export default function Home() {
                                 setSearchTerm(e.target.value);
                                 setError(''); // Limpa o erro ao digitar
                             }}
-                            className="flex-1 p-2 border-2 border-blue-400 rounded-l-md text-xl h-10"
+                            className="flex-1 p-2 border-3 border-blue-400 rounded-l-md text-xl h-10"
                         />
                         <button
                             onClick={handleSearch} // Chama a função handleSearch ao clicar
-                            className="p-2 bg-[#334EA0] text-white border border-blue-800 rounded-r-md cursor-pointer text-xl h-10"
-                        >
-                            &#128269;
+                            className=" p-2 bg-[#334EA0] text-white border border-blue-800 rounded-r-md cursor-pointer text-xl h-10"
+                        ><FaSearch className='text-xl'></FaSearch>
                         </button>
                     </div>
                     {error && <p className="text-red-500 mt-2">{error}</p>}
@@ -67,15 +67,15 @@ export default function Home() {
                             to="/cadastro"
                             className="px-6 py-3 bg-[#334EA0] text-white border border-blue-600 rounded-md shadow-md hover:bg-blue-600 text-center w-60 text-2xl"
                         >
-                            Cadastro
+                            CADASTRO
                         </Link>
                         <Link
                             to="/estatisticas"
                             className="px-6 py-3 bg-[#334EA0] text-white border border-blue-600 rounded-md shadow-md hover:bg-blue-600 text-center w-60 text-2xl"
                         >
-                            Estatísticas
+                            ESTATISTICAS
                         </Link>
-                    </div>
+                    </div>  
                     <Link to="/app">
                         <img src={logo} className="w-40 mt-20" alt="Logo" />
                     </Link>
