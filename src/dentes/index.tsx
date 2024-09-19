@@ -44,7 +44,7 @@ export default function Dentes() {
       }
     };
 
-    if (codPaciente) {
+    if (codPaciente) {  
       fetchPaciente();
     }
   }, []);
