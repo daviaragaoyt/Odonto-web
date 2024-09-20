@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Cadastro from './cadastro'; // Importar o componente de Cadastro
-import Home from './home';
+import Cadastro from './Cadastro'; // Importar o componente de Cadastro
+import Home from './Home';
 import Dentes from './dentes';
 
 const App: React.FC = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter >
       <Routes >
         <Route  path="/" element={<Home />} />
         <Route path="/dentes/:codPaciente" element={<Dentes />} />
