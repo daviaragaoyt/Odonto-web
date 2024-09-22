@@ -1,16 +1,7 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import denteIcon from "../../public/images/Group.png";
-import Body from "../Components/Body";
-
-interface Paciente {
-  cod_paciente: number;
-  cpf: string;
-  idade: number;
-  matricula: number;
-  nome: string;
-  sexo: string;
-}
+import Body from "../Components/Background";
 
 interface Dente {
   id: number;
@@ -21,7 +12,8 @@ interface Dente {
 export default function Dentes() {
   const navigate = useNavigate();
   const { codPaciente } = useParams<{ codPaciente: string }>();
-  const [paciente, setPaciente] = useState<Paciente | null>(null);
+  const location = useLocation();
+  const { nome, matricula } = location.state || {}; // Acessando os dados passados via state
   const [error, setError] = useState("");
   const [opcoesDentes, setOpcoesDentes] = useState<Dente[]>([
     { id: 1, dente: "V11", score: null },
@@ -42,17 +34,16 @@ export default function Dentes() {
         if (!response.ok) {
           throw new Error("Erro ao buscar os dados do paciente");
         }
-        const data = await response.json();
-        setPaciente(data); // Atualiza o estado com os dados do paciente
+     
       } catch {
         setError("Erro ao buscar os dados do paciente");
       }
     };
 
-    if (codPaciente) {  
+    if (codPaciente) {
       fetchPaciente();
     }
-  }, []);
+  },);
 
   // Função para calcular a média dos scores
   const calcularMedia = () => {
@@ -119,7 +110,7 @@ export default function Dentes() {
     <Body>
       <div
         className="w-10  h-10 flex justify-center items-center bg-[#334EA0] rounded"
-        onClick={() => navigate("/cadastro")}
+        onClick={() => navigate("/")}
       >
         <button className="top-50 right-10">
           <div className="text-white text-lg">←</div>
@@ -131,7 +122,7 @@ export default function Dentes() {
       <div className="flex flex-col mb-6">
         <h3 className="text-xl text-zinc-50">NOME:</h3>
         <input
-          value={paciente?.nome}
+          value={nome}
           className="mt-2 p-2 rounded-lg bg-white text-xl font-bold"
           readOnly
         />
@@ -142,7 +133,7 @@ export default function Dentes() {
         <h5 className="text-xl text-zinc-50">MATRICULA:</h5>
         <input
           typeof="true"
-          value={paciente?.matricula}
+          value={matricula}
           className="mt-2 p-2 rounded-lg bg-white text-xl font-bold"
           readOnly
         />

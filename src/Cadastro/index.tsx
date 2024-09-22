@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Body from "../Components/Body";
+import Background from "../Components/Background";
 
 import { useNavigate } from "react-router-dom";
 
@@ -66,7 +66,7 @@ export default function Cadastro() {
   };
 
   return (
-    <Body>
+    <Background>
       <div
         className="w-10  h-10 flex justify-center items-center bg-[#334EA0] rounded"
         onClick={() => navigate("/")}
@@ -158,6 +158,6 @@ export default function Cadastro() {
       >
         CADASTRAR
       </button>
-    </Body>
+    </Background>
   );
 }

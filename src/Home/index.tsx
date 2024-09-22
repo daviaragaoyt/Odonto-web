@@ -1,81 +1,78 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Body from "../Components/Body";
+import Body from "../Components/Background";
 import nome from '../../public/images/nome.png';
 import logo from '../../public/images/logo.png';
-import {FaSearch} from 'react-icons/fa'
+import { FaSearch } from 'react-icons/fa';
 
 export default function Home() {
-    const [searchTerm, setSearchTerm] = useState(''); // Estado para armazenar o valor da entrada
-    const [error, setError] = useState(''); // Estado para armazenar possíveis erros
-    const navigate = useNavigate(); // Hook para navegação programática
+    const [searchTerm, setSearchTerm] = useState('');
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     // Função chamada ao clicar no botão
-    const handleSearch = async () => {
+    const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
         if (!searchTerm.trim()) {
-            setError('Por favor, insira o nome do paciente.');
+            setError('Por favor, insira a matrícula do Paciente.');
             return;
         }
 
         try {
-            // Requisição para buscar o paciente pelo nome
-            const response = await fetch(``);
+            // Requisição para buscar o paciente pela matrícula
+            const response = await fetch(`https://bakcend-deploy.vercel.app/paciente/${searchTerm}`);
+
             if (!response.ok) {
                 throw new Error('Paciente não encontrado');
             }
 
-            const paciente = await response.json();
-            
             // Verifica se o paciente foi encontrado
-            if (paciente && paciente.codPaciente) {
-                // Redireciona para a página de avaliação dentária com o código do paciente.
-                navigate(`/dentes/${paciente.codPaciente}`);
+            const data = await response.json();
+            if (data) {
+                // Redireciona para a página de avaliação dentária e passa os dados do paciente no state
+                navigate(`/dentes/${searchTerm}`, { state: { nome: data.nome, matricula: searchTerm } });
             } else {
                 setError('Paciente não encontrado');
             }
-        } catch  {
+        } catch {
             setError('Erro ao buscar o paciente. Tente novamente.');
         }
-    };
+    }
 
     return (
         <div>
             <Body>
                 <div className="flex flex-col items-center justify-center h-screen bg-cover gap-10 mt-14">
                     <img className="w-full max-w-xs mb-4" src={nome} alt="Nome" />
-                    <div className="flex items-center justify-center">
+                    <form onSubmit={handleSearch} className="flex items-center justify-center">
                         <input
                             type="text"
-                            placeholder="Nome do Paciente"
-                            value={searchTerm} // Define o valor do input como o estado
+                            placeholder="Matrícula do Paciente"
+                            value={searchTerm}
                             onChange={(e) => {
                                 setSearchTerm(e.target.value);
-                                setError(''); // Limpa o erro ao digitar
+                                setError('');
                             }}
                             className="flex-1 p-2 border-3 border-blue-400 rounded-l-md text-xl h-10"
                         />
                         <button
-                            onClick={handleSearch} // Chama a função handleSearch ao clicar
+                            type='submit'
                             className=" p-2 bg-[#334EA0] text-white border border-blue-800 rounded-r-md cursor-pointer text-xl h-10"
-                        ><FaSearch className='text-xl'></FaSearch>
+                        >
+                            <FaSearch className='text-xl'></FaSearch>
                         </button>
-                    </div>
+                    </form>
                     {error && <p className="text-red-500 mt-2">{error}</p>}
 
                     <div className="flex flex-col items-center gap-24 mt-14">
-                        <Link
-                            to="/cadastro"
-                            className="px-6 py-3 bg-[#334EA0] text-white border border-blue-600 rounded-md shadow-md hover:bg-blue-600 text-center w-60 text-2xl"
-                        >
+                        <Link to="/cadastro" className="px-6 py-3 bg-[#334EA0] text-white border border-blue-600 rounded-md shadow-md hover:bg-blue-600 text-center w-60 text-2xl">
                             CADASTRO
                         </Link>
-                        <Link
-                            to="/estatisticas"
-                            className="px-6 py-3 bg-[#334EA0] text-white border border-blue-600 rounded-md shadow-md hover:bg-blue-600 text-center w-60 text-2xl"
-                        >
+                        <Link to="/estatisticas" className="px-6 py-3 bg-[#334EA0] text-white border border-blue-600 rounded-md shadow-md hover:bg-blue-600 text-center w-60 text-2xl">
                             ESTATISTICAS
                         </Link>
-                    </div>  
+                    </div>
                     <Link to="/app">
                         <img src={logo} className="w-40 mt-20" alt="Logo" />
                     </Link>
