@@ -1,110 +1,89 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import denteIcon from "../../public/images/Group.png";
 import Body from "../Components/Background";
 
 interface Dente {
   id: number;
   dente: string;
-  score: number | null;
+  score: number | null
 }
 
 export default function Dentes() {
   const navigate = useNavigate();
   const { codPaciente } = useParams<{ codPaciente: string }>();
   const location = useLocation();
-  const { nome, matricula } = location.state || {}; // Acessando os dados passados via state
-  const [error, setError] = useState("");
+  const { nome, matricula } = location.state || {};
+
   const [opcoesDentes, setOpcoesDentes] = useState<Dente[]>([
     { id: 1, dente: "V11", score: null },
     { id: 2, dente: "V16", score: null },
     { id: 3, dente: "V26", score: null },
     { id: 4, dente: "V31", score: null },
     { id: 5, dente: "L36", score: null },
-    { id: 6, dente: "L46", score: null },
+    { id: 6, dente: "L46", score: null }
+    // Continue para os outros dentes...
   ]);
 
-  // Faz a requisição para buscar os dados do paciente ao montar o componente
   useEffect(() => {
     const fetchPaciente = async () => {
+      if (!codPaciente) return;
       try {
-        const response = await fetch(
-          `https://bakcend-deploy.vercel.app/paciente/${codPaciente}`
-        );
+        const response = await fetch(`https://backend-deploy.vercel.app/paciente/${codPaciente}`);
         if (!response.ok) {
-          throw new Error("Erro ao buscar os dados do paciente");
+          const errorData = await response.text();
+          throw new Error(`Erro ao buscar os dados do paciente: ${errorData}`);
         }
-     
+        // Processamento adicional se necessário...
       } catch {
-        setError("Erro ao buscar os dados do paciente");
+        console.log('deu ruim')
       }
     };
+    fetchPaciente();
+  }, [codPaciente]);
 
-    if (codPaciente) {
-      fetchPaciente();
-    }
-  },);
-
-  // Função para calcular a média dos scores
   const calcularMedia = () => {
     const totalNotas = opcoesDentes.reduce(
-      (sum, dente) => sum + (dente.score !== null ? dente.score : 0),
+      (sum, dente) => sum + (dente.score ?? 0), // Usa 0 se o score for null
       0
     );
-    const media = totalNotas / opcoesDentes.length;
-    return media;
+    return totalNotas / opcoesDentes.length;
   };
 
-  // Submeter o formulário
   const handleSubmit = async () => {
     const media = calcularMedia();
-
-    // Salvando os dados no backend
     try {
-      const response = await fetch(
-        "https://bakcend-deploy.vercel.app/adddentes",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            Avaliacao_arcada: opcoesDentes
-              .map((dente) => dente.score)
-              .join(","),
-            fk_Paciente_Cod_Paciente: codPaciente,
-            fk_Dente_Cod_dente: opcoesDentes.map((dente) => dente.id).join(","),
-          }),
-        }
-      );
-
+      const response = await fetch("https://backend-deploy.vercel.app/adddentes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          Avaliacao_arcada: opcoesDentes.map(dente => dente.score).join(","),
+          fk_Paciente_Cod_Paciente: codPaciente,
+          fk_Dente_Cod_dente: opcoesDentes.map(dente => dente.id).join(","),
+        }),
+      });
       if (!response.ok) {
-        throw new Error("Erro ao salvar dados dos dentes.");
+        const errorData = await response.text();
+        throw new Error(`Erro ao salvar dados dos dentes: ${errorData}`);
+      }
+      // Navegação baseada na média calculada
+      if (media <= 1) {
+        navigate("/resultados/resultado1");
+      } else if (media <= 2) {
+        navigate("/resultados/resultado2");
+      } else if (media <= 3) {
+        navigate("/resultados/resultado3");
       }
     } catch {
-      alert("Erro ao salvar os dados.");
-    }
-
-    // Navegar para a página correta com base na média
-    if (media >= 0 && media <= 1) {
-      navigate("/resultados/resultado"); // Página para média entre 0 e 1
-    } else if (media > 1 && media <= 2) {
-      navigate("/resultados/resultado1"); // Página para média entre 1 e 2
-    } else if (media > 2 && media <= 3) {
-      navigate("/resultados/resultado2"); // Página para média entre 2 e 3
+      alert('deu ruim')
     }
   };
 
-  // Lidar com a alteração de scores dos dentes
   const handleScoreChange = (index: number, score: number) => {
     const novasOpcoesDentes = [...opcoesDentes];
     novasOpcoesDentes[index].score = score;
     setOpcoesDentes(novasOpcoesDentes);
   };
-
-  if (error) {
-    return <div>{error}</div>;
-  }
 
   return (
     <Body>

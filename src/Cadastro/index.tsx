@@ -1,11 +1,9 @@
 import { useState } from "react";
 import Background from "../Components/Background";
-
 import { useNavigate } from "react-router-dom";
 
 export default function Cadastro() {
   const navigate = useNavigate();
-  // Hooks UseState
   const [nome, setNome] = useState("");
   const [matricula, setMatricula] = useState("");
   const [cpf, setCpf] = useState("");
@@ -14,19 +12,28 @@ export default function Cadastro() {
 
   // Função para formatar o CPF
   const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(/\D/g, ""); // Remove tudo que não for número
+    const value = e.target.value.replace(/\D/g, ""); // Remove tudo que não for número
+    let formattedCpf = value;
     if (value.length <= 11) {
-      value = value.replace(/(\d{3})(\d)/, "$1.$2");
-      value = value.replace(/(\d{3})(\d)/, "$1.$2");
-      value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+      formattedCpf = value.replace(/(\d{3})(\d)/, "$1.$2");
+      formattedCpf = formattedCpf.replace(/(\d{3})(\d)/, "$1.$2");
+      formattedCpf = formattedCpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
     }
-    setCpf(value); // Atualiza o estado com o CPF formatado
+    setCpf(formattedCpf); // Atualiza o estado com o CPF formatado
   };
+
+  // Função para garantir matrícula com 7 números
+  const handleMatriculaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\D/g, ""); // Remove qualquer caractere não numérico
+    if (value.length <= 7) {
+      setMatricula(value); // Atualiza a matrícula apenas se tiver 7 dígitos ou menos
+    }
+  };
+
 
   // Função para quando o botão cadastrar for acionado
   const handleSubmit = async () => {
     if (!nome || !cpf || !matricula || !idade || !genero) {
-      // Verificação de campos
       window.alert("Por favor, preencha todos os campos.");
       return;
     }
@@ -34,7 +41,6 @@ export default function Cadastro() {
     try {
       const response = await fetch(
         "https://bakcend-deploy.vercel.app/addpaciente",
-        // "http://localhost:3535/addpaciente",
         {
           method: "POST",
           headers: {
@@ -52,9 +58,12 @@ export default function Cadastro() {
 
       if (response.ok) {
         const data = await response.json();
-        navigate(`/dentes/${data.cod_paciente}`);
+
+        // Redireciona para a página 'Dentes', enviando nome e matrícula via state
+        navigate(`/dentes/${data.cod_paciente}`, {
+          state: { nome, matricula }
+        });
         window.alert("Paciente Cadastrado com Sucesso!");
-        
       } else {
         console.error("Erro ao cadastrar");
         window.alert("Erro ao cadastrar!");
@@ -114,7 +123,7 @@ export default function Cadastro() {
         <input
           type="text"
           value={matricula}
-          onChange={(e) => setMatricula(e.target.value)}
+          onChange={handleMatriculaChange}
           placeholder="Digite a matrícula"
           className="mt-2 p-2 rounded-lg bg-white text-xl "
         />

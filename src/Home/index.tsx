@@ -14,6 +14,7 @@ export default function Home() {
     const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+
         if (!searchTerm.trim()) {
             setError('Por favor, insira a matrícula do Paciente.');
             return;
@@ -22,6 +23,7 @@ export default function Home() {
         try {
             // Requisição para buscar o paciente pela matrícula
             const response = await fetch(`https://bakcend-deploy.vercel.app/paciente/${searchTerm}`);
+            // Função para garantir matrícula com 7 números
 
             if (!response.ok) {
                 throw new Error('Paciente não encontrado');
@@ -51,11 +53,17 @@ export default function Home() {
                             placeholder="Matrícula do Paciente"
                             value={searchTerm}
                             onChange={(e) => {
-                                setSearchTerm(e.target.value);
+                                const value = e.target.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+                                if (value.length <= 7) { // Limita o input a 7 dígitos
+                                    setSearchTerm(value); // Atualiza o estado apenas se for menor ou igual a 7
+                                }
                                 setError('');
                             }}
+                            maxLength={7} // Limita o input para no máximo 7 caracteres
                             className="flex-1 p-2 border-3 border-blue-400 rounded-l-md text-xl h-10"
                         />
+
+
                         <button
                             type='submit'
                             className=" p-2 bg-[#334EA0] text-white border border-blue-800 rounded-r-md cursor-pointer text-xl h-10"
