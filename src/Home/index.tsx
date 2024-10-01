@@ -10,6 +10,19 @@ export default function Home() {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
+    // const [appDisponivel,] = useState(() => {
+    //     const startDate = new Date('2024-10-01T00:00:00-03:00'); // Data de início
+    //     const endDate = new Date('2024-10-02T23:59:59-03:00'); // Data de fim
+    //     const currentDate = new Date(); // Data atual
+
+    //     // Verificando se a data atual está dentro do período
+    //     if (currentDate < startDate || currentDate > endDate) {
+    //         // Alert.alert("Erro!", "Servidor fora do ar");
+    //         return false
+    //     }
+    //     return true
+    // })
+
     // Função chamada ao clicar no botão
     const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -41,6 +54,22 @@ export default function Home() {
             setError('Erro ao buscar o paciente. Tente novamente.');
         }
     }
+    // if (!appDisponivel) {
+    //     window.alert('Servidores Fora de ar!')
+    //     return (
+
+    //         <div>
+    //             <Body>
+    //                 <h1 className="text-3xl text-white text-shadow  font-lilitaOne">
+    //                     App Indisponivel.
+    //                 </h1>
+    //                 <h1 className="text-xl text-white text-shadow  font-lilitaOne">
+    //                     Volte Novamente Mais Tarde.
+    //                 </h1>
+    //             </Body>
+    //         </div>
+    //     )
+    // }
 
     return (
         <div>
