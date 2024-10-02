@@ -60,7 +60,7 @@ export default function Cadastro() {
         const data = await response.json();
 
         // Redireciona para a página 'Dentes', enviando nome e matrícula via state
-        navigate(`/dentes/${data.cod_paciente}`, {
+        navigate(`/dentes/${data.matricula}`, {
           state: { nome, matricula }
         });
         window.alert("Paciente Cadastrado com Sucesso!");

@@ -6,37 +6,39 @@ import logo from '../../public/images/logo.png';
 import { FaSearch } from 'react-icons/fa';
 
 export default function Home() {
-    const [searchTerm, setSearchTerm] = useState('');
+    const [matricula, setMatricula] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    
 
-    // const [appDisponivel,] = useState(() => {
-    //     const startDate = new Date('2024-10-01T00:00:00-03:00'); // Data de início
-    //     const endDate = new Date('2024-10-02T23:59:59-03:00'); // Data de fim
-    //     const currentDate = new Date(); // Data atual
-
-    //     // Verificando se a data atual está dentro do período
-    //     if (currentDate < startDate || currentDate > endDate) {
-    //         // Alert.alert("Erro!", "Servidor fora do ar");
-    //         return false
-    //     }
-    //     return true
-    // })
+    const [appDisponivel] = useState(() => {
+        const startDate = new Date('2024-10-01T00:00:00-03:00'); // Data de início
+        const endDate = new Date('2024-10-03T23:59:59-03:00'); // Data de fim
+        const currentDate = new Date(); // Data atual
+    
+        // Verificando se a data atual está dentro do período
+        if (currentDate < startDate || currentDate > endDate) {
+          // Alert.alert("Erro!", "Servidor fora do ar");
+          return false
+        }
+        return true
+      })
 
     // Função chamada ao clicar no botão
     const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
 
-        if (!searchTerm.trim()) {
+        if (!matricula.trim()) {
             setError('Por favor, insira a matrícula do Paciente.');
             return;
         }
 
         try {
             // Requisição para buscar o paciente pela matrícula
-            const response = await fetch(`https://bakcend-deploy.vercel.app/paciente/${searchTerm}`);
-            // Função para garantir matrícula com 7 números
+            const response = await fetch(`https://bakcend-deploy.vercel.app/paciente/${matricula}`);
+          
+            
 
             if (!response.ok) {
                 throw new Error('Paciente não encontrado');
@@ -44,9 +46,10 @@ export default function Home() {
 
             // Verifica se o paciente foi encontrado
             const data = await response.json();
+            console.log("response",response)
             if (data) {
                 // Redireciona para a página de avaliação dentária e passa os dados do paciente no state
-                navigate(`/dentes/${searchTerm}`, { state: { nome: data.nome, matricula: searchTerm } });
+                navigate(`/dentes/${matricula}`, { state: { matricula: matricula } });
             } else {
                 setError('Paciente não encontrado');
             }
@@ -54,22 +57,22 @@ export default function Home() {
             setError('Erro ao buscar o paciente. Tente novamente.');
         }
     }
-    // if (!appDisponivel) {
-    //     window.alert('Servidores Fora de ar!')
-    //     return (
+    if (!appDisponivel) {
+        window.alert('Servidores Fora de ar!')
+        return (
 
-    //         <div>
-    //             <Body>
-    //                 <h1 className="text-3xl text-white text-shadow  font-lilitaOne">
-    //                     App Indisponivel.
-    //                 </h1>
-    //                 <h1 className="text-xl text-white text-shadow  font-lilitaOne">
-    //                     Volte Novamente Mais Tarde.
-    //                 </h1>
-    //             </Body>
-    //         </div>
-    //     )
-    // }
+            <div>
+                <Body>
+                    <h1 className="text-3xl text-white text-shadow  font-lilitaOne">
+                        App Indisponivel.
+                    </h1>
+                    <h1 className="text-xl text-white text-shadow  font-lilitaOne">
+                        Volte Novamente Mais Tarde.
+                    </h1>
+                </Body>
+            </div>
+        )
+    }
 
     return (
         <div>
@@ -80,11 +83,11 @@ export default function Home() {
                         <input
                             type="text"
                             placeholder="Matrícula do Paciente"
-                            value={searchTerm}
+                            value={matricula}
                             onChange={(e) => {
                                 const value = e.target.value.replace(/\D/g, ''); // Remove caracteres não numéricos
                                 if (value.length <= 7) { // Limita o input a 7 dígitos
-                                    setSearchTerm(value); // Atualiza o estado apenas se for menor ou igual a 7
+                                    setMatricula(value); // Atualiza o estado apenas se for menor ou igual a 7
                                 }
                                 setError('');
                             }}

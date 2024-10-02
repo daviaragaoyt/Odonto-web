@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+
 // Tipagem para o botão customizado, estendendo as propriedades nativas de <button>
 interface CustomButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   text: string;
@@ -12,7 +13,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({ text, ...props }) => (
   </button>
 );
 
-export default function Resultado2() {
+export default function Resultado3() {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,21 +25,34 @@ export default function Resultado2() {
   }, [navigate]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#89FFDC]">
-      <h1 className="text-4xl font-bold text-zinc-50 text-shadow-lg">PARABÉNS!</h1>
-      <img
-        src="/images/trofeu.png" // Ajuste o caminho da imagem se necessário
-        alt="Parabéns"
-        className="w-30 h-30" // Ajustando o tamanho da imagem
-      />
-      <h1 className="text-3xl font-semibold text-zinc-50 text-shadow-lg">
-        Parabéns, sua saúde bucal está excelente!
-      </h1>
-      <div className="mb-2 flex justify-center">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-red-400">
+      {/* Header (parabéns) */}
+      <div className="text-center mb-4">
+        <h1 className="text-4xl font-bold text-zinc-50 text-shadow-lg">OH NÃO!!</h1>
+      </div>
+
+      {/* Imagem de congratulação */}
+      <div className="mt-6">
         <img
-          src="/images/logo.png" // Ajuste o caminho da imagem se necessário
+          src="../../../public/images/escovaepasta.png"
+          alt="Parabéns"
+          className="w-50 h-25"
+        />
+      </div>
+
+      {/* Texto de congratulação */}
+      <div className="text-center mb-6">
+        <h1 className="text-3xl font-semibold text-zinc-50 text-shadow-lg">
+         Sua saúde bucal precisa melhorar!!
+        </h1>
+      </div>
+
+      {/* Logo (ou outra imagem) */}
+      <div className="mb-2">
+        <img
+          src="/images/logo.png"
           alt="Logo"
-          className="w-50 h-25 object-contain" // Ajustando o tamanho da imagem
+          className="w-50 h-25"
         />
       </div>
 

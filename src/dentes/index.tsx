@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import denteIcon from "../../public/images/Group.png";
 import Body from "../Components/Background";
 
@@ -9,11 +9,22 @@ interface Dente {
   score: number | null
 }
 
+interface Paciente {
+  cod_paciente: number;
+  nome: string;
+  idade: number;
+  sexo: string;
+  cpf: string;
+  matricula: number;
+}
+
 export default function Dentes() {
   const navigate = useNavigate();
-  const { codPaciente } = useParams<{ codPaciente: string }>();
-  const location = useLocation();
-  const { nome, matricula } = location.state || {};
+  const { matricula } = useParams<{ matricula: string }>();
+  const [paciente, setPaciente] = useState<Paciente | null>()
+  const [isLoading, setIsLoading] = useState(false);
+  // const location = useLocation();
+  // const { nome, matricula } = location.state || {};
 
   const [opcoesDentes, setOpcoesDentes] = useState<Dente[]>([
     { id: 1, dente: "V11", score: null },
@@ -27,20 +38,29 @@ export default function Dentes() {
 
   useEffect(() => {
     const fetchPaciente = async () => {
-      if (!codPaciente) return;
+      if (!matricula) return;
       try {
-        const response = await fetch(`https://backend-deploy.vercel.app/paciente/${codPaciente}`);
+        setIsLoading(true)
+        const response = await fetch(`https://bakcend-deploy.vercel.app/paciente/${matricula}`);
+       
+        
+
         if (!response.ok) {
           const errorData = await response.text();
           throw new Error(`Erro ao buscar os dados do paciente: ${errorData}`);
         }
-        // Processamento adicional se necessário...
+
+        const data = await response.json()
+        setIsLoading(false)
+        setPaciente(data)
       } catch {
-        console.log('deu ruim')
+        setIsLoading(false)
+        console.log('Deu ruim!')
       }
     };
+
     fetchPaciente();
-  }, [codPaciente]);
+  }, [matricula]);
 
   const calcularMedia = () => {
     const totalNotas = opcoesDentes.reduce(
@@ -52,21 +72,31 @@ export default function Dentes() {
 
   const handleSubmit = async () => {
     const media = calcularMedia();
+    console.log({
+      avaliacao_arcada: opcoesDentes.map(dente => dente.score).join(','),
+      fk_paciente_cod_paciente: matricula,
+      fk_dente_cod_dente: opcoesDentes.map(dente => dente.id).join(','),
+    });
+
     try {
-      const response = await fetch("https://backend-deploy.vercel.app/adddentes", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const response = await fetch("https://bakcend-deploy.vercel.app/adddentes", {
+     
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
-          Avaliacao_arcada: opcoesDentes.map(dente => dente.score).join(","),
-          fk_Paciente_Cod_Paciente: codPaciente,
-          fk_Dente_Cod_dente: opcoesDentes.map(dente => dente.id).join(","),
+          avaliacao_arcada: opcoesDentes.map(dente => dente.score).join(','),
+          fk_paciente_cod_paciente: paciente?.cod_paciente,
+          fk_dente_cod_dente: opcoesDentes.map(dente => dente.id).join(','),
         }),
       });
+
       if (!response.ok) {
-        const errorData = await response.text();
-        throw new Error(`Erro ao salvar dados dos dentes: ${errorData}`);
+        const errorData = await response.json(); // Captura o erro em formato JSON
+        throw new Error(`Erro ao salvar dados dos dentes: ${errorData.message || 'Erro desconhecido'}`);
       }
-      // Navegação baseada na média calculada
+
       if (media <= 1) {
         navigate("/resultados/resultado1");
       } else if (media <= 2) {
@@ -75,15 +105,26 @@ export default function Dentes() {
         navigate("/resultados/resultado3");
       }
     } catch {
-      alert('deu ruim')
+
+      alert('Erro ao enviar os dados, por favor tente novamente.');
     }
   };
+
 
   const handleScoreChange = (index: number, score: number) => {
     const novasOpcoesDentes = [...opcoesDentes];
     novasOpcoesDentes[index].score = score;
     setOpcoesDentes(novasOpcoesDentes);
   };
+
+  if (!paciente) {
+
+    return (
+      <Body>
+        <h1 text-xl text-zinc-50>{isLoading ? 'Carregando...' : 'Paciente não cadastrado!'}</h1>
+      </Body>
+    )
+  }
 
   return (
     <Body>
@@ -101,7 +142,7 @@ export default function Dentes() {
       <div className="flex flex-col mb-6">
         <h3 className="text-xl text-zinc-50">NOME:</h3>
         <input
-          value={nome}
+          value={paciente.nome}
           className="mt-2 p-2 rounded-lg bg-white text-xl font-bold"
           readOnly
         />
