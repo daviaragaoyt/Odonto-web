@@ -12,7 +12,7 @@ export default function Home() {
     
 
     const [appDisponivel] = useState(() => {
-        const startDate = new Date('2024-10-01T00:00:00-03:00'); // Data de início
+        const startDate = new Date('2024-10-03T00:00:00-03:00'); // Data de início
         const endDate = new Date('2024-10-03T23:59:59-03:00'); // Data de fim
         const currentDate = new Date(); // Data atual
     
