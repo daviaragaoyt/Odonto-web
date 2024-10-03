@@ -9,20 +9,20 @@ export default function Home() {
     const [matricula, setMatricula] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    
+
 
     const [appDisponivel] = useState(() => {
         const startDate = new Date('2024-10-03T00:00:00-03:00'); // Data de início
         const endDate = new Date('2024-10-03T23:59:59-03:00'); // Data de fim
         const currentDate = new Date(); // Data atual
-    
+
         // Verificando se a data atual está dentro do período
         if (currentDate < startDate || currentDate > endDate) {
-          // Alert.alert("Erro!", "Servidor fora do ar");
-          return false
+            // Alert.alert("Erro!", "Servidor fora do ar");
+            return false
         }
         return true
-      })
+    })
 
     // Função chamada ao clicar no botão
     const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -37,8 +37,8 @@ export default function Home() {
         try {
             // Requisição para buscar o paciente pela matrícula
             const response = await fetch(`https://bakcend-deploy.vercel.app/paciente/${matricula}`);
-          
-            
+
+
 
             if (!response.ok) {
                 throw new Error('Paciente não encontrado');
@@ -46,7 +46,7 @@ export default function Home() {
 
             // Verifica se o paciente foi encontrado
             const data = await response.json();
-            console.log("response",response)
+            console.log("response", response)
             if (data) {
                 // Redireciona para a página de avaliação dentária e passa os dados do paciente no state
                 navigate(`/dentes/${matricula}`, { state: { matricula: matricula } });
@@ -63,13 +63,16 @@ export default function Home() {
 
             <div>
                 <Body>
-                    <h1 className="text-3xl text-white text-shadow  font-lilitaOne">
-                        App Indisponivel.
-                    </h1>
-                    <h1 className="text-xl text-white text-shadow  font-lilitaOne">
-                        Volte Novamente Mais Tarde.
-                    </h1>
+                    <div className="flex flex-col items-center justify-center h-screen bg-cover gap-10 mt-14">
+                        <h1 className="text-3xl text-white text-shadow  font-lilitaOne">
+                            App Indisponivel.
+                        </h1>
+                        <h1 className="text-xl text-white text-shadow  font-lilitaOne">
+                            Volte Novamente Mais Tarde.
+                        </h1>
+                    </div>
                 </Body>
+
             </div>
         )
     }
