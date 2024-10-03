@@ -12,7 +12,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({ text, ...props }) => (
   </button>
 );
 
-export default function Resultado2() {
+export default function Resultado1() {
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -34,7 +34,7 @@ export default function Resultado2() {
       {/* Imagem de congratulação */}
       <div className="mt-6">
         <img
-          src="../../../public/images/dentinho.png"
+          src="/images/dentinho.png"
           alt="Parabéns"
           className="w-50 h-25"
         />
