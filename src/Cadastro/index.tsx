@@ -12,15 +12,12 @@ export default function Cadastro() {
 
   // Função para validar CPF
   const validarCpf = (cpf:any) => {
-    // Remove todos os caracteres não numéricos
     cpf = cpf.replace(/\D/g, '');
 
-    // Verifica se o CPF tem 11 dígitos e se não são todos iguais
     if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) {
       return false;
     }
 
-    // Valida o primeiro dígito verificador
     let soma = 0;
     for (let i = 0; i < 9; i++) {
       soma += parseInt(cpf.charAt(i)) * (10 - i);
@@ -31,7 +28,6 @@ export default function Cadastro() {
       return false;
     }
 
-    // Valida o segundo dígito verificador
     soma = 0;
     for (let i = 0; i < 10; i++) {
       soma += parseInt(cpf.charAt(i)) * (11 - i);
@@ -47,22 +43,28 @@ export default function Cadastro() {
 
   // Função para formatar o CPF
   const handleCpfChange = (e:any) => {
-    const value = e.target.value.replace(/\D/g, ""); // Remove tudo que não for número
+    const value = e.target.value.replace(/\D/g, "");
     let formattedCpf = value;
     if (value.length <= 11) {
       formattedCpf = value.replace(/(\d{3})(\d)/, "$1.$2");
       formattedCpf = formattedCpf.replace(/(\d{3})(\d)/, "$1.$2");
       formattedCpf = formattedCpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
     }
-    setCpf(formattedCpf); // Atualiza o estado com o CPF formatado
+    setCpf(formattedCpf);
   };
 
   // Função para garantir matrícula com 7 números
   const handleMatriculaChange = (e:any) => {
-    const value = e.target.value.replace(/\D/g, ""); // Remove qualquer caractere não numérico
+    const value = e.target.value.replace(/\D/g, "");
     if (value.length <= 7) {
-      setMatricula(value); // Atualiza a matrícula apenas se tiver 7 dígitos ou menos
+      setMatricula(value);
     }
+  };
+
+  // Função para filtrar apenas letras para o nome
+  const handleNomeChange = (e:any) => {
+    const value = e.target.value.replace(/[^A-Za-zÀ-ÿ\s]/g, ''); // Remove tudo que não é letra ou espaço
+    setNome(value);
   };
 
   // Função para quando o botão cadastrar for acionado
@@ -72,13 +74,11 @@ export default function Cadastro() {
       return;
     }
 
-    // Validação do CPF
     if (!validarCpf(cpf)) {
       window.alert("CPF inválido. Por favor, verifique e tente novamente.");
       return;
     }
 
-    // Validação da idade
     const idadeNum = parseInt(idade);
     if (isNaN(idadeNum) || idadeNum < 2 || idadeNum > 100) {
       window.alert("A idade deve estar entre 2 e 100 anos.");
@@ -93,7 +93,7 @@ export default function Cadastro() {
         },
         body: JSON.stringify({
           nome,
-          cpf: cpf.replace(/\D/g, ""), // Remove a máscara para enviar o CPF limpo
+          cpf: cpf.replace(/\D/g, ""),
           matricula,
           idade,
           sexo: genero,
@@ -102,8 +102,6 @@ export default function Cadastro() {
 
       if (response.ok) {
         const data = await response.json();
-
-        // Redireciona para a página 'Dentes', enviando nome e matrícula via state
         navigate(`/dentes/${data.matricula}`, {
           state: { nome, matricula }
         });
@@ -138,7 +136,7 @@ export default function Cadastro() {
         <input
           type="text"
           value={nome}
-          onChange={(e) => setNome(e.target.value)}
+          onChange={handleNomeChange} // Chama a função que filtra apenas letras
           placeholder="Digite o nome"
           className="mt-2 p-2 rounded-lg bg-white text-xl"
         />
