@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Body from "../Components/Background";
 import nome from '../../public/images/nome.png';
@@ -10,6 +10,12 @@ export default function Home() {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
+    const linkExt = useCallback(() => {
+        window.open("https://1drv.ms/x/c/48b64a126a64263a/EWkzPGxg4olCsy9ZlcAq5xABb_KK_yp0kJsobCJ7AO-_VA?e=fHMTOp", "_blank");
+    }, []);
+    const pesquisa = useCallback(() => {
+        window.open("https://docs.google.com/forms/d/e/1FAIpQLSckPn6DoZ-c5gjOIUo64suleflwuR7AA80eS-DzVLMLTAzHNw/viewform?usp=sf_link", "_blank");
+    }, []);
 
     // Função chamada ao clicar no botão
     const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -80,13 +86,21 @@ export default function Home() {
                         <Link to="/cadastro" className="px-6 py-3 bg-[#334EA0] text-white border border-blue-600 rounded-md shadow-md hover:bg-blue-600 text-center w-60 text-2xl">
                             CADASTRO
                         </Link>
-                        <Link to="/estatisticas" className="px-6 py-3 bg-[#334EA0] text-white border border-blue-600 rounded-md shadow-md hover:bg-blue-600 text-center w-60 text-2xl">
+                        <button
+                            onClick={linkExt}
+                            className="px-6 py-3 bg-[#334EA0] text-white border border-blue-600 rounded-md shadow-md hover:bg-blue-600 text-center w-60 text-2xl"
+                        >
                             ESTATISTICAS
-                        </Link>
+                        </button>
                     </div>
-                    <Link to="/app">
-                        <img src={logo} className="w-40 mt-20" alt="Logo" />
-                    </Link>
+
+                    <img
+                        src={logo}
+                        className="w-40 mt-20 cursor-pointer"
+                        alt="Logo"
+                        onClick={pesquisa}
+                    />
+
                 </div>
             </Body>
         </div>

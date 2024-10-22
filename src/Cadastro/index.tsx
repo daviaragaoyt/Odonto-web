@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useState } from "react";
 import Background from "../Components/Background";
 import { useNavigate } from "react-router-dom";
 
@@ -118,17 +118,20 @@ export default function Cadastro() {
 
   return (
     <Background>
-      <div
-        className="w-10 h-10 flex justify-center items-center bg-[#334EA0] rounded"
-        onClick={() => navigate("/")}
-      >
-        <button className="top-50 right-10">
+      <div className="flex items-center justify-between mb-6">
+        {/* Botão de voltar */}
+        <div
+          className="w-8 h-10 flex justify-center items-center bg-[#334EA0] rounded cursor-pointer"
+          onClick={() => navigate("/")}
+        >
           <div className="text-white text-lg">←</div>
-        </button>
+        </div>
+        
+        {/* Título de Cadastro */}
+        <h1 className="text-center text-white text-shadow text-3xl font-lilitaOne">
+          CADASTRO
+        </h1>
       </div>
-      <h1 className="text-center text-white text-shadow text-3xl font-lilitaOne mb-6">
-        CADASTRO
-      </h1>
 
       {/* Input de Nome */}
       <div className="flex flex-col mb-4">
@@ -136,7 +139,7 @@ export default function Cadastro() {
         <input
           type="text"
           value={nome}
-          onChange={handleNomeChange} // Chama a função que filtra apenas letras
+          onChange={handleNomeChange}
           placeholder="Digite o nome"
           className="mt-2 p-2 rounded-lg bg-white text-xl"
         />
