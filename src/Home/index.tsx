@@ -44,14 +44,14 @@ export default function Home() {
             setError('Erro ao buscar o paciente. Tente novamente.');
         }
     }
-   
+
 
     return (
         <div>
             <Body>
                 <div className="flex flex-col items-center justify-center h-screen bg-cover gap-10 mt-14">
                     <img className="w-full max-w-xs mb-4" src={nome} alt="Nome" />
-                    <form onSubmit={handleSearch} className="flex items-center justify-center">
+                    <form onSubmit={handleSearch} className="flex items-center justify-center w-full max-w-md">
                         <input
                             type="text"
                             placeholder="Matrícula do Paciente"
@@ -64,13 +64,12 @@ export default function Home() {
                                 setError('');
                             }}
                             maxLength={7} // Limita o input para no máximo 7 caracteres
-                            className="flex-1 p-2 border-3 border-blue-400 rounded-l-md text-xl h-10"
+                            className="w-full sm:w-72 p-2 border-3 border-blue-400 rounded-l-md text-xl h-10"
                         />
-
 
                         <button
                             type='submit'
-                            className=" p-2 bg-[#334EA0] text-white border border-blue-800 rounded-r-md cursor-pointer text-xl h-10"
+                            className="p-2 bg-[#334EA0] text-white border border-blue-800 rounded-r-md cursor-pointer text-xl h-10"
                         >
                             <FaSearch className='text-xl'></FaSearch>
                         </button>
