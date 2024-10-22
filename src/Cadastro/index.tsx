@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {  useState } from "react";
 import Background from "../Components/Background";
 import { useNavigate } from "react-router-dom";
 
@@ -11,7 +11,7 @@ export default function Cadastro() {
   const [genero, setGenero] = useState("");
 
   // Função para validar CPF
-  const validarCpf = (cpf:any) => {
+  const validarCpf = (cpf:string) => {
     cpf = cpf.replace(/\D/g, '');
 
     if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) {
@@ -42,7 +42,7 @@ export default function Cadastro() {
   };
 
   // Função para formatar o CPF
-  const handleCpfChange = (e:any) => {
+  const handleCpfChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, "");
     let formattedCpf = value;
     if (value.length <= 11) {
@@ -54,7 +54,7 @@ export default function Cadastro() {
   };
 
   // Função para garantir matrícula com 7 números
-  const handleMatriculaChange = (e:any) => {
+  const handleMatriculaChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, "");
     if (value.length <= 7) {
       setMatricula(value);
@@ -62,7 +62,7 @@ export default function Cadastro() {
   };
 
   // Função para filtrar apenas letras para o nome
-  const handleNomeChange = (e:any) => {
+  const handleNomeChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^A-Za-zÀ-ÿ\s]/g, ''); // Remove tudo que não é letra ou espaço
     setNome(value);
   };
